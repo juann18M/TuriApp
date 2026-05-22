@@ -17,7 +17,8 @@ import {
   ArrowRight,
   Star,
   Quote,
-  Percent
+  Percent,
+  Car
 } from 'lucide-react';
 
 // 1. Tipados para TypeScript
@@ -67,6 +68,7 @@ export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [destinoIndex, setDestinoIndex] = useState(0);
+  const [showSplash, setShowSplash] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // 2. Datos del carrusel principal
@@ -220,6 +222,14 @@ export default function Home() {
     }
   ];
 
+  // Efecto para ocultar el splash screen después de 3 segundos
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
   // Auto-play del carrusel principal
   useEffect(() => {
     const timer = setInterval(() => {
@@ -253,6 +263,268 @@ export default function Home() {
       setDestinoIndex(Math.min(newIndex, destinos.length - 1));
     }
   };
+
+  // Pantalla de bienvenida (Splash Screen) - Versión mejorada
+  if (showSplash) {
+    return (
+      <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white">
+        {/* Animación de carretera con líneas */}
+        <div className="absolute bottom-0 left-0 w-full h-20 overflow-hidden">
+          <div className="road-lines"></div>
+        </div>
+
+        {/* Avión volando por encima */}
+        <div className="absolute flying-plane">
+          <Plane size={48} className="text-[#005bb5] rotate-[-15deg]" strokeWidth={1.5} />
+          {/* Estela del avión */}
+          <div className="plane-trail"></div>
+        </div>
+
+        {/* Auto viajando por la parte inferior */}
+        <div className="absolute traveling-car">
+          <Car size={40} className="text-[#e3001b]" strokeWidth={1.5} />
+          {/* Humo del auto */}
+          <div className="car-smoke"></div>
+        </div>
+
+        {/* Logo principal */}
+        <div className="logo-container mb-6 relative z-10">
+          <div className="w-32 h-32 md:w-40 md:h-40 bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl shadow-xl flex items-center justify-center overflow-hidden border border-gray-200">
+            <img 
+              src="/logo.png" 
+              alt="TuriApp Logo" 
+              className="w-full h-full object-contain scale-110"
+            />
+          </div>
+          {/* Círculos pulsantes alrededor del logo */}
+          <div className="pulse-ring"></div>
+          <div className="pulse-ring delay-300"></div>
+        </div>
+        
+        {/* Nombre animado */}
+        <div className="brand-name text-5xl md:text-7xl font-black tracking-tighter flex items-center gap-1 mb-3 relative z-10">
+          <span className="text-[#005bb5] animate-float" style={{ animationDelay: '0s' }}>T</span>
+          <span className="text-[#e3001b] animate-float" style={{ animationDelay: '0.1s' }}>u</span>
+          <span className="text-[#FFB300] animate-float" style={{ animationDelay: '0.2s' }}>r</span>
+          <span className="text-[#8cc63f] animate-float" style={{ animationDelay: '0.3s' }}>i</span>
+          <span className="text-gray-800 font-light ml-0.5 animate-float" style={{ animationDelay: '0.4s' }}>App</span>
+        </div>
+        
+        {/* Eslogan */}
+        <p className="text-gray-500 text-sm md:text-base tracking-wide mt-2 relative z-10 animate-fadeInUp">
+          Tu próximo viaje, a un clic de distancia
+        </p>
+        
+        {/* Barra de carga animada */}
+        <div className="w-48 h-1 bg-gray-200 rounded-full mt-8 overflow-hidden relative z-10">
+          <div className="h-full bg-gradient-to-r from-[#005bb5] via-[#e3001b] to-[#8cc63f] rounded-full animate-loading" />
+        </div>
+
+        <style jsx>{`
+          @keyframes loading {
+            0% { width: 0%; }
+            100% { width: 100%; }
+          }
+          
+          @keyframes fadeInUp {
+            from {
+              opacity: 0;
+              transform: translateY(20px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          
+          @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+          }
+          
+          @keyframes pulse {
+            0% {
+              transform: scale(1);
+              opacity: 0.5;
+            }
+            100% {
+              transform: scale(1.5);
+              opacity: 0;
+            }
+          }
+          
+          @keyframes fly {
+            0% {
+              transform: translateX(-150px) translateY(0px) rotate(-10deg);
+              opacity: 0;
+            }
+            10% {
+              opacity: 1;
+            }
+            90% {
+              opacity: 1;
+            }
+            100% {
+              transform: translateX(calc(100vw + 150px)) translateY(-30px) rotate(10deg);
+              opacity: 0;
+            }
+          }
+          
+          @keyframes drive {
+            0% {
+              transform: translateX(-200px) translateY(0px);
+              opacity: 0;
+            }
+            10% {
+              opacity: 1;
+            }
+            90% {
+              opacity: 1;
+            }
+            100% {
+              transform: translateX(calc(100vw + 200px)) translateY(0px);
+              opacity: 0;
+            }
+          }
+          
+          @keyframes roadLines {
+            0% {
+              background-position: 0 0;
+            }
+            100% {
+              background-position: 40px 0;
+            }
+          }
+          
+          @keyframes trailFade {
+            0% {
+              width: 0;
+              opacity: 0;
+            }
+            20% {
+              width: 60px;
+              opacity: 0.6;
+            }
+            80% {
+              width: 60px;
+              opacity: 0.6;
+            }
+            100% {
+              width: 0;
+              opacity: 0;
+            }
+          }
+          
+          @keyframes smoke {
+            0% {
+              width: 0;
+              opacity: 0;
+              transform: translateX(0);
+            }
+            20% {
+              width: 20px;
+              opacity: 0.4;
+            }
+            80% {
+              width: 20px;
+              opacity: 0.4;
+            }
+            100% {
+              width: 0;
+              opacity: 0;
+              transform: translateX(30px);
+            }
+          }
+          
+          .animate-loading {
+            animation: loading 2.5s ease-in-out;
+          }
+          
+          .animate-fadeInUp {
+            animation: fadeInUp 0.8s ease-out;
+          }
+          
+          .animate-float {
+            animation: float 2s ease-in-out infinite;
+            display: inline-block;
+          }
+          
+          .logo-container {
+            position: relative;
+          }
+          
+          .pulse-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            border-radius: 30px;
+            background: rgba(0, 91, 181, 0.2);
+            transform: translate(-50%, -50%) scale(1);
+            animation: pulse 2s ease-out infinite;
+            pointer-events: none;
+          }
+          
+          .delay-300 {
+            animation-delay: 0.8s;
+          }
+          
+          .flying-plane {
+            position: absolute;
+            top: 25%;
+            left: 0;
+            animation: fly 3s ease-in-out forwards;
+            z-index: 20;
+          }
+          
+          .plane-trail {
+            position: absolute;
+            top: 18px;
+            right: -40px;
+            height: 4px;
+            background: linear-gradient(90deg, rgba(0, 91, 181, 0.6), transparent);
+            border-radius: 2px;
+            animation: trailFade 3s ease-in-out forwards;
+          }
+          
+          .traveling-car {
+            position: absolute;
+            bottom: 60px;
+            left: 0;
+            animation: drive 3.5s ease-in-out forwards;
+            z-index: 20;
+          }
+          
+          .car-smoke {
+            position: absolute;
+            top: 12px;
+            left: -25px;
+            height: 6px;
+            background: radial-gradient(circle, rgba(227, 0, 27, 0.4), transparent);
+            border-radius: 50%;
+            animation: smoke 3.5s ease-in-out forwards;
+          }
+          
+          .road-lines {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 200%;
+            height: 4px;
+            background: repeating-linear-gradient(
+              90deg,
+              #ccc 0px,
+              #ccc 20px,
+              transparent 20px,
+              transparent 40px
+            );
+            animation: roadLines 0.8s linear infinite;
+          }
+        `}</style>
+      </div>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-[#f8f9fc] relative font-sans antialiased">
@@ -625,72 +897,71 @@ export default function Home() {
         </div>
       </section>
 
-   {/* ─── BANNER CTA MINIMALISTA ──────────────────────────────────────── */}
+      {/* ─── BANNER CTA MINIMALISTA ──────────────────────────────────────── */}
+      <section className="px-6 py-20">
+        <div className="max-w-6xl mx-auto bg-white rounded-[2.5rem] p-10 md:p-16 relative overflow-hidden shadow-lg border border-gray-100 flex flex-col md:flex-row items-center justify-between gap-10">
+          
+          {/* Avioncito que cruza de izquierda a derecha */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-1/3" style={{ animation: 'cruzar 15s linear infinite' }}>
+              <Plane className="w-8 h-8 md:w-10 md:h-10 text-gray-300 fill-gray-200" />
+            </div>
+          </div>
 
-<section className="px-6 py-20">
-  <div className="max-w-6xl mx-auto bg-white rounded-[2.5rem] p-10 md:p-16 relative overflow-hidden shadow-lg border border-gray-100 flex flex-col md:flex-row items-center justify-between gap-10">
-    
-    {/* Avioncito que cruza de izquierda a derecha */}
-    <div className="absolute inset-0 pointer-events-none">
-      <div className="absolute top-1/3" style={{ animation: 'cruzar 15s linear infinite' }}>
-        <Plane className="w-8 h-8 md:w-10 md:h-10 text-gray-300 fill-gray-200" />
-      </div>
-    </div>
+          {/* Contenido */}
+          <div className="relative z-10 max-w-xl">
+            <span className="inline-block px-3 py-1 rounded-full bg-green-50 text-green-600 font-semibold text-xs tracking-widest uppercase mb-4 border border-green-100">
+               Disponible Proximamente en iOS y Android
+            </span>
+            <h2 className="text-3xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">
+              Lleva tu próximo viaje <br />en el bolsillo
+            </h2>
+            <p className="text-gray-500 text-base md:text-lg mb-8 leading-relaxed">
+              Descarga la App y recibe ofertas exclusivas, gestiona tus reservas y accede a guías offline.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <button className="bg-[#005bb5] text-white px-8 py-3.5 rounded-full font-bold text-sm hover:bg-[#004a94] transition-all shadow-md flex items-center gap-2">
+                Descargar Gratis
+                <ArrowRight size={16} />
+              </button>
+              <button className="border border-gray-300 text-gray-700 px-8 py-3.5 rounded-full font-bold text-sm hover:border-gray-400 hover:bg-gray-50 transition-all">
+                Saber más
+              </button>
+            </div>
+          </div>
 
-    {/* Contenido */}
-    <div className="relative z-10 max-w-xl">
-      <span className="inline-block px-3 py-1 rounded-full bg-green-50 text-green-600 font-semibold text-xs tracking-widest uppercase mb-4 border border-green-100">
-         Disponible Proximamente en iOS y Android
-      </span>
-      <h2 className="text-3xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">
-        Lleva tu próximo viaje <br />en el bolsillo
-      </h2>
-      <p className="text-gray-500 text-base md:text-lg mb-8 leading-relaxed">
-        Descarga la App y recibe ofertas exclusivas, gestiona tus reservas y accede a guías offline.
-      </p>
-      <div className="flex flex-wrap gap-4">
-        <button className="bg-[#005bb5] text-white px-8 py-3.5 rounded-full font-bold text-sm hover:bg-[#004a94] transition-all shadow-md flex items-center gap-2">
-          Descargar Gratis
-          <ArrowRight size={16} />
-        </button>
-        <button className="border border-gray-300 text-gray-700 px-8 py-3.5 rounded-full font-bold text-sm hover:border-gray-400 hover:bg-gray-50 transition-all">
-          Saber más
-        </button>
-      </div>
-    </div>
+          {/* Mockup */}
+          <div className="relative z-10 w-full max-w-sm hidden md:block">
+            <div className="bg-gray-100 rounded-3xl p-3 shadow-md">
+              <img 
+                src="https://images.unsplash.com/photo-1512428559087-560fa5ceab42?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                alt="App Mockup" 
+                className="rounded-2xl w-full h-[380px] object-cover"
+              />
+            </div>
+          </div>
 
-    {/* Mockup */}
-    <div className="relative z-10 w-full max-w-sm hidden md:block">
-      <div className="bg-gray-100 rounded-3xl p-3 shadow-md">
-        <img 
-          src="https://images.unsplash.com/photo-1512428559087-560fa5ceab42?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
-          alt="App Mockup" 
-          className="rounded-2xl w-full h-[380px] object-cover"
-        />
-      </div>
-    </div>
+        </div>
 
-  </div>
-
-  <style>{`
-    @keyframes cruzar {
-      0% {
-        transform: translate(-100px, 0) rotate(-15deg);
-        opacity: 0;
-      }
-      10% {
-        opacity: 0.6;
-      }
-      90% {
-        opacity: 0.6;
-      }
-      100% {
-        transform: translate(calc(100vw - 200px), 0) rotate(15deg);
-        opacity: 0;
-      }
-    }
-  `}</style>
-</section>
+        <style>{`
+          @keyframes cruzar {
+            0% {
+              transform: translate(-100px, 0) rotate(-15deg);
+              opacity: 0;
+            }
+            10% {
+              opacity: 0.6;
+            }
+            90% {
+              opacity: 0.6;
+            }
+            100% {
+              transform: translate(calc(100vw - 200px), 0) rotate(15deg);
+              opacity: 0;
+            }
+          }
+        `}</style>
+      </section>
 
       {/* ─── FOOTER ─────────────────────────────────────────── */}
       <footer className="bg-white border-t border-gray-100 py-16 px-6 md:px-12">
