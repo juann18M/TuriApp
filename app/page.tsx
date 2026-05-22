@@ -11,9 +11,13 @@ import {
   Search, 
   Menu, 
   X, 
+  Plane, 
   ChevronLeft, 
   ChevronRight,
-  ArrowRight
+  ArrowRight,
+  Star,
+  Quote,
+  Percent
 } from 'lucide-react';
 
 // 1. Tipados para TypeScript
@@ -38,6 +42,25 @@ interface Feature {
   desc: string;
   iconBg: string;
   iconColor: string;
+}
+
+interface Promocion {
+  id: number;
+  title: string;
+  location: string;
+  oldPrice: string;
+  newPrice: string;
+  discount: string;
+  image: string;
+  tag: string;
+}
+
+interface Testimonio {
+  id: number;
+  name: string;
+  role: string;
+  text: string;
+  avatar: string;
 }
 
 export default function Home() {
@@ -120,7 +143,59 @@ export default function Home() {
     }
   ];
 
-  // 4. Datos de la sección de ventajas (Inyectados correctamente aquí)
+  // 4. Datos de promociones
+  const promociones: Promocion[] = [
+    {
+      id: 1,
+      title: "Escapada Riviera Maya",
+      location: "Quintana Roo, México",
+      oldPrice: "$5,200",
+      newPrice: "$3,899",
+      discount: "25% OFF",
+      image: "https://images.unsplash.com/photo-1552074284-5e88ef1aef18?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      tag: "Paquete Todo Incluido"
+    },
+    {
+      id: 2,
+      title: "Ruta del Vino y Queso",
+      location: "Querétaro, México",
+      oldPrice: "$2,100",
+      newPrice: "$1,680",
+      discount: "20% OFF",
+      image: "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      tag: "Turismo Gastronómico"
+    },
+    {
+      id: 3,
+      title: "Aventura en la Huasteca",
+      location: "San Luis Potosí, México",
+      oldPrice: "$3,500",
+      newPrice: "$2,450",
+      discount: "30% OFF",
+      image: "https://images.unsplash.com/photo-1589308078059-be1415eab4c3?auto=format&fit=crop&w=600&q=80",
+      tag: "Ecoturismo"
+    }
+  ];
+
+  // 5. Datos de testimonios
+  const testimonios: Testimonio[] = [
+    {
+      id: 1,
+      name: "Mariana Valdez",
+      role: "Viajera Frecuente",
+      text: "Gracias a TuriApp encontré promociones que no vi en ninguna otra agencia. El tour por la Huasteca Potosina fue organizado a la perfección.",
+      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
+    },
+    {
+      id: 2,
+      name: "Alejandro Gómez",
+      role: "Estudiante Universitario",
+      text: "La interfaz es súper intuitiva. Pude armar el viaje de fin de semana con mis amigos ajustándonos a nuestro presupuesto de estudiantes.",
+      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
+    }
+  ];
+
+  // 6. Datos de la sección de ventajas
   const features: Feature[] = [
     { 
       icon: ShieldCheck, 
@@ -455,64 +530,167 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── SECCIÓN DE BENEFICIOS (CORREGIDA) ────────────────── */}
-      <section className="relative bg-gradient-to-b from-gray-50 to-white py-24 md:py-28 overflow-hidden border-t border-gray-100">
-        <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-blue-50/40 to-transparent -z-10" />
-
-        <div className="max-w-7xl mx-auto px-6 md:px-10 relative z-10">
-          <div className="text-center max-w-2xl mx-auto mb-20">
-            <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-red-50 text-[#e3001b] font-bold tracking-widest uppercase text-[11px] border border-red-100 shadow-sm">
-              Ventajas Competitivas
-            </span>
-            <h2 className="text-4xl md:text-5xl font-black text-gray-900 tracking-tight mt-4">
-              ¿Por qué elegir <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#e3001b] to-rose-500">TuriApp?</span>
-            </h2>
-            <p className="mt-4 text-lg text-gray-500">
-              Diseñamos la mejor experiencia para que tu única preocupación sea disfrutar del destino.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
-            {features.map((item, i) => {
-              const Icon = item.icon;
-              return (
-                <div 
-                  key={i} 
-                  className="group relative flex flex-col items-center text-center p-8 md:p-10 bg-white rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
-                >
-                  <div className={`w-16 h-16 mb-8 rounded-2xl flex items-center justify-center ${item.iconBg} ${item.iconColor} group-hover:scale-110 transition-transform duration-500 shadow-inner`}>
-                    <Icon size={28} strokeWidth={1.5} />
-                  </div>
-                  
-                  <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-[#e3001b] transition-colors duration-300 tracking-tight">
-                    {item.title}
-                  </h3>
-                  <p className="text-gray-500 text-sm leading-relaxed">
-                    {item.desc}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-      
-      {/* ─── BANNER CTA ──────────────────────────────────────── */}
-      <section className="px-6 py-12 mb-12">
-        <div className="max-w-6xl mx-auto bg-gradient-to-br from-gray-900 to-gray-950 rounded-[2.5rem] p-10 md:p-20 text-center text-white relative overflow-hidden shadow-2xl">
-          <div className="relative z-10 max-w-2xl mx-auto">
-            <h2 className="text-4xl md:text-6xl font-black mb-6 tracking-tight leading-none">¿Listo para volar?</h2>
-            <p className="text-gray-400 text-base md:text-lg mb-10 leading-relaxed">
-              Descarga la App de TuriApp y accede a ofertas exclusivas de temporada que no encontrarás en ningún otro sitio de internet.
-            </p>
-            <button className="bg-gradient-to-r from-[#8cc63f] to-[#7ab132] text-white px-8 py-4 rounded-full font-bold text-base transition-all duration-300 hover:scale-105 shadow-lg shadow-[#8cc63f]/20">
-              Descargar App Ahora
+      {/* ─── SECCIÓN PROMOCIONES DESTACADAS ──────────────────────── */}
+      <section className="py-20 md:py-28 relative">
+        <div className="max-w-7xl mx-auto px-6 md:px-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
+            <div className="max-w-2xl">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 font-semibold tracking-wide text-xs uppercase border border-blue-100 mb-4">
+                <Percent size={14} /> Ofertas de Temporada
+              </span>
+              <h2 className="text-3xl md:text-5xl font-black text-gray-900 tracking-tight">
+                Destinos a precios <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">increíbles</span>
+              </h2>
+              <p className="mt-4 text-gray-500 text-lg">
+                Reserva hoy y asegura tu lugar en las experiencias más buscadas por nuestra comunidad de viajeros.
+              </p>
+            </div>
+            <button className="hidden md:flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-800 transition-colors">
+              Ver todos los destinos <ArrowRight size={18} />
             </button>
           </div>
-          <div className="absolute top-0 right-0 w-80 h-80 bg-[#005bb5] rounded-full filter blur-[120px] opacity-15"></div>
-          <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#8cc63f] rounded-full filter blur-[120px] opacity-10"></div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {promociones.map((promo) => (
+              <div key={promo.id} className="group bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col">
+                <div className="relative h-60 overflow-hidden">
+                  <div className="absolute top-4 left-4 z-10 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-gray-900 shadow-sm">
+                    {promo.tag}
+                  </div>
+                  <div className="absolute top-4 right-4 z-10 bg-[#e3001b] text-white px-3 py-1 rounded-full text-xs font-bold shadow-md">
+                    {promo.discount}
+                  </div>
+                  <img 
+                    src={promo.image} 
+                    alt={promo.title} 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                </div>
+                <div className="p-6 flex-1 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center gap-1.5 text-gray-500 text-sm mb-2">
+                      <MapPin size={16} className="text-blue-500" />
+                      {promo.location}
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">{promo.title}</h3>
+                  </div>
+                  <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
+                    <div>
+                      <p className="text-xs text-gray-400 line-through">{promo.oldPrice}</p>
+                      <p className="text-lg font-black text-[#8cc63f]">{promo.newPrice} <span className="text-xs font-normal text-gray-500">MXN</span></p>
+                    </div>
+                    <button className="bg-gray-900 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-blue-600 transition-colors">
+                      Reservar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
+
+      {/* ─── SECCIÓN CLIENTES / TESTIMONIOS ──────────────────────── */}
+      <section className="py-20 bg-gray-50 border-y border-gray-100">
+        <div className="max-w-7xl mx-auto px-6 md:px-10">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <h2 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
+              La comunidad <span className="text-[#e3001b]">TuriApp</span>
+            </h2>
+            <p className="mt-4 text-gray-500">
+              No lo decimos nosotros, lo dicen los más de 10,000 viajeros que ya descubrieron México con nuestra plataforma.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {testimonios.map((testimonio) => (
+              <div key={testimonio.id} className="bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100 relative">
+                <Quote size={40} className="absolute top-6 right-8 text-blue-50 opacity-50" />
+                <div className="flex gap-1 text-yellow-400 mb-4">
+                  {[...Array(5)].map((_, i) => <Star key={i} size={16} fill="currentColor" />)}
+                </div>
+                <p className="text-gray-700 italic mb-6 leading-relaxed">
+                  "{testimonio.text}"
+                </p>
+                <div className="flex items-center gap-4">
+                  <img src={testimonio.avatar} alt={testimonio.name} className="w-12 h-12 rounded-full object-cover border-2 border-blue-100" />
+                  <div>
+                    <h4 className="font-bold text-gray-900 text-sm">{testimonio.name}</h4>
+                    <p className="text-xs text-gray-500">{testimonio.role}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+   {/* ─── BANNER CTA MINIMALISTA ──────────────────────────────────────── */}
+
+<section className="px-6 py-20">
+  <div className="max-w-6xl mx-auto bg-white rounded-[2.5rem] p-10 md:p-16 relative overflow-hidden shadow-lg border border-gray-100 flex flex-col md:flex-row items-center justify-between gap-10">
+    
+    {/* Avioncito que cruza de izquierda a derecha */}
+    <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute top-1/3" style={{ animation: 'cruzar 15s linear infinite' }}>
+        <Plane className="w-8 h-8 md:w-10 md:h-10 text-gray-300 fill-gray-200" />
+      </div>
+    </div>
+
+    {/* Contenido */}
+    <div className="relative z-10 max-w-xl">
+      <span className="inline-block px-3 py-1 rounded-full bg-green-50 text-green-600 font-semibold text-xs tracking-widest uppercase mb-4 border border-green-100">
+         Disponible Proximamente en iOS y Android
+      </span>
+      <h2 className="text-3xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">
+        Lleva tu próximo viaje <br />en el bolsillo
+      </h2>
+      <p className="text-gray-500 text-base md:text-lg mb-8 leading-relaxed">
+        Descarga la App y recibe ofertas exclusivas, gestiona tus reservas y accede a guías offline.
+      </p>
+      <div className="flex flex-wrap gap-4">
+        <button className="bg-[#005bb5] text-white px-8 py-3.5 rounded-full font-bold text-sm hover:bg-[#004a94] transition-all shadow-md flex items-center gap-2">
+          Descargar Gratis
+          <ArrowRight size={16} />
+        </button>
+        <button className="border border-gray-300 text-gray-700 px-8 py-3.5 rounded-full font-bold text-sm hover:border-gray-400 hover:bg-gray-50 transition-all">
+          Saber más
+        </button>
+      </div>
+    </div>
+
+    {/* Mockup */}
+    <div className="relative z-10 w-full max-w-sm hidden md:block">
+      <div className="bg-gray-100 rounded-3xl p-3 shadow-md">
+        <img 
+          src="https://images.unsplash.com/photo-1512428559087-560fa5ceab42?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+          alt="App Mockup" 
+          className="rounded-2xl w-full h-[380px] object-cover"
+        />
+      </div>
+    </div>
+
+  </div>
+
+  <style>{`
+    @keyframes cruzar {
+      0% {
+        transform: translate(-100px, 0) rotate(-15deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.6;
+      }
+      90% {
+        opacity: 0.6;
+      }
+      100% {
+        transform: translate(calc(100vw - 200px), 0) rotate(15deg);
+        opacity: 0;
+      }
+    }
+  `}</style>
+</section>
 
       {/* ─── FOOTER ─────────────────────────────────────────── */}
       <footer className="bg-white border-t border-gray-100 py-16 px-6 md:px-12">
