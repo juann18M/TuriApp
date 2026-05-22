@@ -6,7 +6,7 @@ export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [destinoIndex, setDestinoIndex] = useState(0);
-  const scrollContainerRef = useRef(null);
+const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // Datos del carrusel principal
   const slides = [
